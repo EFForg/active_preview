@@ -1,0 +1,3 @@
+module ActivePreview
+  # Your code goes here...
+end
