@@ -15,3 +15,8 @@
 
 *.swp
 *.swo
+
+# ignore dummy app tmp
+/test/dummy/tmp/
+/test/dummy/log/
+*.sqlite3

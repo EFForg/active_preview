@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.summary       = %q{Create previews of ActiveRecord objects that don't                                                                                                               
                        modify the database}                                   
   s.homepage      = "https://github.com/efforg/active_preview"  
-  s.description = "TODO: Description of ActivePreview."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
