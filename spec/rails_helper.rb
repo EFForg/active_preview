@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 ENV['RAILS_ENV'] = 'test'
 
-require File.expand_path("../../test/dummy/config/environment.rb", __FILE__)
-ActiveRecord::Migrator.migrations_paths = [File.expand_path("../../test/dummy/db/migrate", __FILE__)]
+require File.expand_path("../../spec/dummy/config/environment.rb", __FILE__)
+ActiveRecord::Migrator.migrations_paths = [File.expand_path("../../spec/dummy/db/migrate", __FILE__)]
 
 require 'rspec/rails'
+require 'database_cleaner'
+require 'byebug'
+require 'active_preview'
 
 SUPPORT_PATH = %w(spec support ** *.rb).freeze
 

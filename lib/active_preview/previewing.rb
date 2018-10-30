@@ -8,7 +8,9 @@ module ActivePreview
           if obj
             obj.preview(attrs)
           else
-            self.new(attrs)
+            # TODO: make the whole child_objs generation into a separate
+            # method so we can generate multi-generation previews of new objs
+            { self: self.new(attrs) }
           end
         end
       end
