@@ -1,6 +1,7 @@
 module ActivePreview
   module Previewing
     extend ActiveSupport::Concern
+    include AssociationHelper
 
     included do
       def self.collection_preview(saved, params)
@@ -34,7 +35,7 @@ module ActivePreview
       p = merged_object(params)
       child_objs = child_keys(params).map do |params_key|
         association = association_from_key(params_key)
-        next unless associations.include?(association)
+        next unless associations(self.class).include?(association)
         [association.to_sym, generate_children(params, params_key)]
       end.compact.to_h
       { self: p, **child_objs }
@@ -43,7 +44,11 @@ module ActivePreview
     private
 
     def merged_object(new_attrs)
-      self.class.new(self.attributes.merge(new_attrs))
+      preview_class.new(self.class.new(self.attributes.merge(new_attrs)))
+    end
+
+    def preview_class
+      "#{self.class}Preview".constantize
     end
 
     def child_keys(hash)
@@ -55,26 +60,9 @@ module ActivePreview
     def generate_children(params, *params_keys)
       child_params = params.dig(*params_keys).to_h.values
         .sort! { |a, b| a["id"] <=> b["id"] }
-      klass = association_class(params_keys.last)
+      klass = association_class(klass: self.class, key: params_keys.last)
       saved = klass.where(id: child_params.map { |p| p["id"] }).order(:id)
       klass.collection_preview(saved, child_params)
-    end
-
-    def single_child?(key)
-      association = association_from_key(key)
-      association.singularize == association
-    end
-
-    def association_from_key(key)
-      key.to_s.split("_").tap { |arr| arr.delete("attributes") }.join("_")
-    end
-
-    def associations
-      self.class.reflect_on_all_associations.map { |a| a.name.to_s }
-    end
-
-    def association_class(key)
-      self.class.reflect_on_association(association_from_key(key)).klass
     end
   end
 end

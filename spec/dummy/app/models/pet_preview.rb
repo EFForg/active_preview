@@ -1,0 +1,2 @@
+class PetPreview < Preview
+end
