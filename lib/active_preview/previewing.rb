@@ -9,9 +9,7 @@ module ActivePreview
           if obj
             obj.preview(attrs)
           else
-            # TODO: make the whole child_objs generation into a separate
-            # method so we can generate multi-generation previews of new objs
-            { self: self.new(attrs) }
+            self.new(attrs).preview
           end
         end
       end
@@ -32,13 +30,13 @@ module ActivePreview
     # Note that the associations are not assigned, so parent.children will be
     # empty
     def preview(params)
-      p = merged_object(params)
-      child_objs = child_keys(params).map do |params_key|
-        association = association_from_key(params_key)
-        next unless associations(self.class).include?(association)
-        [association.to_sym, generate_children(params, params_key)]
-      end.compact.to_h
-      { self: p, **child_objs }
+      merged_object(params).tap do |p|
+        child_keys(params).each do |params_key|
+          association = association_from_key(params_key)
+          next unless associations(self.class).include?(association)
+          p.send("#{association}=", generate_children(params, params_key))
+        end
+      end
     end
 
     private

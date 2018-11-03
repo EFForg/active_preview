@@ -7,7 +7,7 @@ RSpec.describe "Single object previews" do
     params = { 'name' => 'New Person Name', 'age' => 20 }
     original_attributes = saved.attributes
     preview = saved.preview(params)
-    expect(preview[:self]).to \
+    expect(preview).to \
       have_attributes(strip_attributes(original_attributes.merge(params)))
     expect(strip_attributes(saved.reload.attributes)).to \
       eq(strip_attributes(original_attributes))

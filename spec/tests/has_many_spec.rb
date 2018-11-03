@@ -21,7 +21,7 @@ RSpec.describe "Has-many previews" do
     original_attributes = saved_pet.attributes
     preview = saved_person.preview(params)
     child_attrs = params["pets_attributes"].values.first
-    expect(preview[:pets].first[:self]).to \
+    expect(preview.pets.first).to \
       have_attributes(strip_attributes(original_attributes.merge(child_attrs),
                                        ignored))
     expect(strip_attributes(saved_pet.reload.attributes, ignored)).to \

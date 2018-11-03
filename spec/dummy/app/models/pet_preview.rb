@@ -1,2 +1,0 @@
-class PetPreview < Preview
-end
