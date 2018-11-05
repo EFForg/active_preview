@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     active_preview (0.1.0)
-      rails (~> 5.1)
+      rails (~> 5)
 
 GEM
   remote: https://rubygems.org/
