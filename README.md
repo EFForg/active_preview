@@ -1,8 +1,23 @@
 # ActivePreview
-Short description and motivation.
+active_preview is a Ruby on Rails plugin that makes it easy to create previews of updates to records. The previews don't interact with the database but otherwise behave like ActiveRecord objects.
 
 ## Usage
-How to use my plugin.
+To preview a model, first run the generator:
+```bash
+$ rails generate active_preview:preview --model MyModel
+```
+This will create `my_model_preview.rb` in `app/previews`. If you have methods that touch the database in your model that need to be used with previewed data, override them there. 
+
+Next, add the `#preview` method to your model:
+```ruby
+class MyModel < ActiveRecord::Base
+  include ActivePreview::Previewing
+end
+```
+
+Now you can pass an attribute hash or `ActionController::Parameters` object to `my_model.preview` to get a preview object with updated attributes that behaves exactly like your model.
+
+For models with associations, run the generator for each associated model and add `include ActivePreview::Previewing` to each model class.
 
 ## Installation
 Add this line to your application's Gemfile:
