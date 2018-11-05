@@ -1,0 +1,10 @@
+inherit_gem:
+  rubocop-github:
+    - config/default.yml
+    - config/rails.yml
+
+AllCops:
+  Exclude:
+    - 'spec/dummy/db/**/*'
+    - 'spec/dummy/config/**/*'
+    - 'spec/dummy/bin/**/*'

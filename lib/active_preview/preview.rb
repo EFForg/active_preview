@@ -1,4 +1,4 @@
-require 'active_preview/override_persistence'
+require "active_preview/override_persistence"
 
 module ActivePreview
   class Preview < SimpleDelegator
@@ -25,7 +25,7 @@ module ActivePreview
         next if respond_to? a # avoid redefining methods
         methods = singular?(a) ? SINGULAR : COLLECTION
         methods.each do |method|
-          self.class.send(:define_method, method.gsub('~', a)) { }
+          self.class.send(:define_method, method.gsub("~", a)) {}
         end
         self.class.send(:attr_accessor, a)
       end

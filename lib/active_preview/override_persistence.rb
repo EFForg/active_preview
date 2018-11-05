@@ -10,9 +10,9 @@ module OverridePersistence
   def destroyed? ; end
   def increment; end
   def increment! ; end
-  def new_record?; end 
-  def persisted?; end 
-  def reload; end 
+  def new_record?; end
+  def persisted?; end
+  def reload; end
   def save; end
   def save! ; end
   def toggle; end
