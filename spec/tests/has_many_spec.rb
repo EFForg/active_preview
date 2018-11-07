@@ -61,6 +61,12 @@ RSpec.describe "Has-many previews" do
     expect(preview.accounts.first.id).to eq(account.id)
   end
 
+  it "does not generate preview objects for associations without previews" do
+    role = Role.create(person: saved_person)
+    preview = saved_person.preview({ "name" => "PREVIEW"})
+    expect(preview.roles.first.id).to eq(role.id)
+  end
+
   def strip_attributes(attrs, to_remove = [])
     to_remove << "created_at" << "updated_at"
     to_remove.each { |a| attrs.delete a }

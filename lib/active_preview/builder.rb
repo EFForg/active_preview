@@ -74,7 +74,7 @@ module ActivePreview
         next if updated_associations.include? a 
         next if preview.ignored_associations.include? a
         saved = [*model.send(a)]
-        next if saved.empty?
+        next if saved.empty? || !saved.first.respond_to?(:preview)
         to_assign = BatchBuilder.build(klass: saved.first.class,
                                        saved_models: saved, parent: preview)
         to_assign = to_assign.first if singular? a

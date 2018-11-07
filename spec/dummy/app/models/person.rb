@@ -5,4 +5,6 @@ class Person < ApplicationRecord
   accepts_nested_attributes_for :pets
   has_many :accounts
   accepts_nested_attributes_for :accounts
+  has_many :roles
+  accepts_nested_attributes_for :roles
 end
