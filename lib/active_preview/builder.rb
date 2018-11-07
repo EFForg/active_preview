@@ -56,8 +56,8 @@ module ActivePreview
       saved = model.send(association).order(:id)
       child_klass = class_of_association(base_class: klass,
                                          association: association)
-      BatchPreviewBuilder.build(klass: child_klass, saved_models: saved,
-                                params: child_params, parent: preview)
+      BatchBuilder.build(klass: child_klass, saved_models: saved,
+                         params: child_params, parent: preview)
     end
 
     def associate_parent
@@ -73,9 +73,8 @@ module ActivePreview
         next if updated_associations.include?(a)
         saved = [*model.send(a)]
         next if saved.empty?
-        to_assign = BatchPreviewBuilder.build(klass: saved.first.class,
-                                              saved_models: saved,
-                                              parent: preview)
+        to_assign = BatchBuilder.build(klass: saved.first.class,
+                                       saved_models: saved, parent: preview)
         to_assign = to_assign.first if singular? a
         preview.send("#{a}=", to_assign)
       end

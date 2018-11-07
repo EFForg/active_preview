@@ -3,7 +3,7 @@ module ActivePreview
     extend ActiveSupport::Concern
 
     def preview(params)
-      PreviewBuilder.build(model: self, params: params)
+      Builder.build(model: self, params: params)
     end
   end
 end
