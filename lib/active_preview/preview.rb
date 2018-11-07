@@ -10,7 +10,7 @@ module ActivePreview
       super(record)
     end
 
-    def original
+    def model_object
       __getobj__
     end
 
@@ -22,12 +22,18 @@ module ActivePreview
 
     def redefine_associations(record)
       associations(record.class).each do |a|
-        next if respond_to? a # avoid redefining methods
+        next if respond_to? "#{a}=" # avoid redefining methods
         methods = singular?(a) ? SINGULAR : COLLECTION
         methods.each do |method|
           self.class.send(:define_method, method.gsub("~", a)) {}
         end
-        self.class.send(:attr_accessor, a)
+        self.class.send(:define_method, "#{a}=") do |associated|
+          instance_variable_set("@#{a}", associated)
+          unless instance_variable_get("@#{a}_defined")
+            define_singleton_method(a) { instance_variable_get "@#{a}" }
+            instance_variable_set("@#{a}_defined", true)
+          end
+        end
       end
     end
   end

@@ -35,6 +35,26 @@ RSpec.describe "Has-many previews" do
     expect { saved_person.preview(params) }.not_to change { Pet.count }
   end
 
+  it "loads persisted associated objects when new values aren't given" do
+    saved_pet
+    preview = saved_person.preview({})
+    expect(preview.pets.first.name).to eq(saved_pet.name)
+  end
+
+  it "overrides associations after setting a new value" do
+    saved_pet
+    preview = saved_person.preview({})
+    preview.pets = []
+    expect(preview.pets).to eq([])
+    expect(saved_person.pets).to eq([saved_pet])
+  end
+
+  it "properly sets parent preview" do
+    saved_pet
+    preview = saved_person.preview({ "name" => "PREVIEW"})
+    expect(preview.pets.first.person.name).to eq("PREVIEW")
+  end
+
   def strip_attributes(attrs, to_remove = [])
     to_remove << "created_at" << "updated_at"
     to_remove.each { |a| attrs.delete a }
