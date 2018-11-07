@@ -55,6 +55,12 @@ RSpec.describe "Has-many previews" do
     expect(preview.pets.first.person.name).to eq("PREVIEW")
   end
 
+  it "does not generate preview objects for ignored associations" do
+    account = Account.create(person: saved_person)
+    preview = saved_person.preview({ "name" => "PREVIEW"})
+    expect(preview.accounts.first.id).to eq(account.id)
+  end
+
   def strip_attributes(attrs, to_remove = [])
     to_remove << "created_at" << "updated_at"
     to_remove.each { |a| attrs.delete a }

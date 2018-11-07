@@ -14,6 +14,12 @@ module ActivePreview
       __getobj__
     end
 
+    # Override in model-specific preview classes to disable previewing
+    # of certain associations
+    def ignored_associations
+      %w().freeze
+    end
+
     # ~ used in place of association names
     SINGULAR = %w(create_~ create_~! reload_~)
     COLLECTION = %w(~_id ~_id= ~<<)
@@ -22,7 +28,7 @@ module ActivePreview
 
     def redefine_associations(record)
       associations(record.class).each do |a|
-        next if respond_to? "#{a}=" # avoid redefining methods
+        next if ignored_associations.include?(a) || respond_to?("#{a}=")
         methods = singular?(a) ? SINGULAR : COLLECTION
         methods.each do |method|
           self.class.send(:define_method, method.gsub("~", a)) {}

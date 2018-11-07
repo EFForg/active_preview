@@ -37,6 +37,7 @@ module ActivePreview
     def update_associations
       @updated_associations ||= child_params_keys.map do |params_key|
         association_from_key(params_key).tap do |a|
+          next if preview.ignored_associations.include? a
           preview.send("#{a}=", build_children(params_key, a))
         end
       end
@@ -70,7 +71,8 @@ module ActivePreview
 
     def load_associations
       associations(klass).each do |a|
-        next if updated_associations.include?(a)
+        next if updated_associations.include? a 
+        next if preview.ignored_associations.include? a
         saved = [*model.send(a)]
         next if saved.empty?
         to_assign = BatchBuilder.build(klass: saved.first.class,
