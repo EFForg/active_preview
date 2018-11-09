@@ -19,7 +19,10 @@ module AssociationHelper
     return parent if set.include? parent
     set.each do |a|
       next unless singular? a
-      return a if association_class(klass: child_class, association: a)
+      if class_of_association(klass: child_class,
+                              association: a) == parent_class
+        return a
+      end
     end
   end
 
