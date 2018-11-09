@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    active_preview (0.1.5)
+    active_preview (0.1.6)
       rails (~> 5)
 
 GEM
